@@ -1,10 +1,8 @@
 package com.example.chicken.controller;
 
-import org.springframework.web.bind.annotation.*;
-
-import java.util.concurrent.CompletableFuture;
-
 import com.example.chicken.service.GameCharacterService;
+import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Mono;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
@@ -17,7 +15,7 @@ public class GameCharacterController {
     }
 
     @PostMapping("/{name}/move")
-    public CompletableFuture<String> moveCharacter(
+    public Mono<String> moveCharacter(
             @RequestHeader("Authorization") String token,
             @PathVariable String name,
             @RequestParam int x,
@@ -27,11 +25,25 @@ public class GameCharacterController {
     }
 
     @PostMapping("/{name}/gather")
-    public CompletableFuture<String> gatherResources(
+    public void gatherResources(
             @RequestHeader("Authorization") String token,
-            @PathVariable String name
+            @PathVariable String name,
+            @RequestBody GatherRequest request
     ) {
-        return gameCharacterService.gathering(token, name);
+        System.out.println("Received name: " + name);
+        System.out.println("Received count: " + request.getCount());
+        gameCharacterService.gathering(token, name, request.getCount());
     }
 
+    public static class GatherRequest {
+        private int count;
+
+        public int getCount() {
+            return count;
+        }
+
+        public void setCount(int count) {
+            this.count = count;
+        }
+    }
 }
