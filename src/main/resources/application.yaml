@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: Chicken
+
+
+kill-chicken-client:
+  base-url: https://api.artifactsmmo.com/my
+  response-timeout-ms: 1000
+  connect-timeout-ms: 1000
+
+move-path:
+  path: /{name}/action/move
+
+gathering-path:
+  path: /{name}/action/gathering
+
+token: some-token
